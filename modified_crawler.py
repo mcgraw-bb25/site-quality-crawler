@@ -62,7 +62,7 @@ class Crawler(object):
                 page_links=outgoing_links
             )
             # TODO: Save page reports
-            print page_report
+            print (page_report)
 
             self.url_queue += outgoing_links
             self.crawled_urls.append(current_url)
