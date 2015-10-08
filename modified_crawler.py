@@ -1,5 +1,6 @@
 import datetime
 import requests
+import time
 from bs4 import BeautifulSoup
 
 
@@ -71,7 +72,7 @@ class Crawler(object):
 
     def sleep(self):
         # TODO: Sleep to avoid being tagged as a bot
-        pass
+        time.sleep(2)
 
     def make_url_absolute_path(self, url, current_url):
         if url.startswith('http://') or url.startswith('https://'):
