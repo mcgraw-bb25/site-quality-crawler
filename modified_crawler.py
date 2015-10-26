@@ -3,6 +3,8 @@ import requests
 import time
 from bs4 import BeautifulSoup
 
+from PageRequest import RequestWrapper
+
 
 class PageReport(object):
     def __init__(
@@ -25,10 +27,12 @@ class PageReport(object):
 
 
 class Crawler(object):
-    def __init__(self, start_url, crawl_limit=20,):
+    def __init__(self, start_url, crawl_limit=5, mock_request_status = False):
+        self.root_url = start_url
         self.url_queue = [start_url]
         self.crawled_urls = []
         self.crawl_limit = crawl_limit
+        self.mock_request_status = mock_request_status
 
     def start(self):
         while len(self.url_queue) > 0 and len(self.crawled_urls) < self.crawl_limit:
@@ -38,15 +42,15 @@ class Crawler(object):
                 continue
 
             if self.outbound_link(current_url):
-                # print "Skipping outbound url - %s" % (current_url)
+                print ("Skipping outbound url ", current_url)
                 continue
 
             try:
-                response = requests.get(url=current_url)
+                response = RequestWrapper(current_url, self.mock_request_status).GetRequest()
                 page_soup = BeautifulSoup(response.content, 'html.parser')
             except:
                 # TODO: Put malformed urls in page report
-                print('Exception: Malformed URL %s', current_url)
+                print('Exception: Malformed URL ', current_url)
 
             outgoing_links = []
             for tag in page_soup.find_all('a'):
@@ -87,9 +91,12 @@ class Crawler(object):
             return "%s/%s" % (current_url, url)
 
     def outbound_link(self, url):
-        return not url.startswith('http://www.workopolis.com/')
+        return not url.startswith(self.root_url)
 
 
 if __name__ == '__main__':
-    c = Crawler('http://www.workopolis.com/content/about')
-    c.start()
+    #c = Crawler('http://www.workopolis.com/content/about')
+    #c.start()
+
+    d = Crawler('mysite.html', 5, True)
+    d.start()
