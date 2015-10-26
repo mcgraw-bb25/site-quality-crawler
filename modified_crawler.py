@@ -75,7 +75,6 @@ class Crawler(object):
             self.sleep()
 
     def sleep(self):
-        # TODO: Sleep to avoid being tagged as a bot
         time.sleep(2)
 
     def make_url_absolute_path(self, url, current_url):
