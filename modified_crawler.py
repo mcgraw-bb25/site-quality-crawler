@@ -3,7 +3,7 @@ import requests
 import time
 from bs4 import BeautifulSoup
 
-from PageRequest import RequestWrapper
+from PageRequest import PageRequest
 
 
 class PageReport(object):
@@ -27,12 +27,11 @@ class PageReport(object):
 
 
 class Crawler(object):
-    def __init__(self, start_url, crawl_limit=5, mock_request_status = False):
+    def __init__(self, start_url, crawl_limit=5):
         self.root_url = start_url
         self.url_queue = [start_url]
         self.crawled_urls = []
         self.crawl_limit = crawl_limit
-        self.mock_request_status = mock_request_status
 
     def start(self):
         while len(self.url_queue) > 0 and len(self.crawled_urls) < self.crawl_limit:
@@ -46,7 +45,7 @@ class Crawler(object):
                 continue
 
             try:
-                response = RequestWrapper(current_url, self.mock_request_status).GetRequest()
+                response = PageRequest(current_url).crawl()
                 page_soup = BeautifulSoup(response.content, 'html.parser')
             except:
                 # TODO: Put malformed urls in page report
@@ -94,8 +93,5 @@ class Crawler(object):
 
 
 if __name__ == '__main__':
-    #c = Crawler('http://www.workopolis.com/content/about')
-    #c.start()
-
-    d = Crawler('mysite.html', 5, True)
-    d.start()
+    c = Crawler('http://www.workopolis.com/content/about')
+    c.start()

@@ -10,9 +10,11 @@ class PageRequest(RequestWrapper):
 
 	def crawl(self):
 		super().__init__(self.url)
-		print ("Hitting %s url" % (self.url))
+		# print ("Hitting %s url" % (self.url))
 		response = super().make_request()
-		print (response.text[0:50])
+		# print (response.text[0:50])
+
+		return response
 
 
 class MockPageRequest(PageRequest, MockRequestWrapper):
