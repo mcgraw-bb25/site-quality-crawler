@@ -1,30 +1,30 @@
 [
 	{
-		"name" : "Home",
+		"name" : "arbitrary_hash_string",
 		"url" : "http://www.mysite.com",
 		"status_code" : 200,
 		"redirects" : [],
-		"imports" : ["About", "Login", "Products"]
+		"page_links" : ["could_be_an_id", "could be anything", "a6f28cn316sa"]
 	},
 	{
-		"name" : "About",
-		"url" : "http://www.mysite.com/aboutus/",
+		"name" : "could_be_an_id",
+		"url" : "/aboutus/",
 		"status_code" : 200,
 		"redirects" : ["http://www.mysite.com/about/"],
-		"imports" : ["Home"]
+		"page_links" : ["arbitrary_hash_string"]
 	},
 	{
-		"name" : "Login",
-		"url" : "http://www.mysite.com/login/",
+		"name" : "could be anything",
+		"url" : "/login/",
 		"status_code" : 200,
 		"redirects" : [],
-		"imports" : []
+		"page_links" : []
 	},
 	{
-		"name" : "Products",
-		"url" : "http://www.mysite.com/products/",
+		"name" : "a6f28cn316sa",
+		"url" : "/products/",
 		"status_code" : 404,
 		"redirects" : [],
-		"imports" : []
+		"page_links" : []
 	}
 ]

@@ -12,8 +12,8 @@
 		<script type="text/javascript" src="js/d3.layout.js"></script>
   		<script type="text/javascript" src="js/packages.js"></script>
 		<script type="text/javascript">
-			var w = 1280,
-			h = 800,
+			var w = 600,
+			h = 600,
 			rx = w / 2,
 			ry = h / 2,
 			m0,
@@ -32,11 +32,14 @@
 			.radius(function(d) { return d.y; })
 			.angle(function(d) { return d.x / 180 * Math.PI; });
 
-			var div = d3.select("body").insert("div", "h2")
-			.style("width", w + "px")
-			.style("height", w + "px")
-			.style("position", "absolute")
-			.style("-webkit-backface-visibility", "hidden");
+      var div = d3.select("body")
+        .insert("div")
+        .style("position", "absolute")
+        .style("top", -80 + "px")
+        .style("left", -160 + "px")
+        .style("width", w + "px")
+        .style("height", h + "px")
+        .style("-webkit-backface-visibility", "hidden");
 
 			var svg = div.append("svg:svg")
 			.attr("width", w)
@@ -71,7 +74,7 @@
 				.attr("dy", ".31em")
 				.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 				.attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-				.text(function(d) { return d.key; })
+				.text(function(d) { return d.url; })
 				.on("mouseover", mouseover)
 				.on("mouseout", mouseout);
 			});
