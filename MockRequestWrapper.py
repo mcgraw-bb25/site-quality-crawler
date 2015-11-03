@@ -1,8 +1,11 @@
 from RequestWrapper import RequestWrapper
 import unittest
 
+class MockResponseObject(object):
 
-
+	def __init__(self, text, content):
+		self.text = text
+		self.content = content
 
 class MockRequestWrapper(RequestWrapper):
 
@@ -16,14 +19,16 @@ class MockRequestWrapper(RequestWrapper):
 		self.text = "<html>"
 		self.content = self.text.encode()
 
-		return self
+		response = MockResponseObject(self.text, self.content)
+
+		return response
 
 class RequestWrapperUnitTest(unittest.TestCase):
 
 	def test_001(self):
 		mock_site = "localsite.com"
-		mock_request = MockRequestWrapper(mock_site)
-		mock_request.make_request()
+		mock_request = MockRequestWrapper(mock_site).make_request()
+		# mock_request.make_request()
 		self.assertEqual(mock_request.text, "<html>")
 		self.assertNotEqual(mock_request.text, "</html>")
 		self.assertEqual(mock_request.content, b"<html>")
