@@ -1,30 +1,30 @@
 [
 	{
-		"id" : 0,
-		"url" : "www.mysite.com",
+		"id" : "hash0",
+		"url" : "http://www.mysite.com/",
 		"status_code" : 200,
 		"redirects" : [],
-		"links" : [1, 2, 3]
+		"page_links" : ["hash1", "hash2", "hash3"]
 	},
 	{
-		"id" : 1,
-		"url" : "/aboutus/",
+		"id" : "hash1",
+		"url" : "aboutus/",
 		"status_code" : 200,
 		"redirects" : ["/about/"],
-		"links" : [0]
+		"page_links" : ["hash0"]
 	},
 	{
-		"id" : 2,
-		"url" : "/login/",
+		"id" : "hash2",
+		"url" : "login/",
 		"status_code" : 200,
 		"redirects" : [],
-		"links" : []
+		"page_links" : []
 	},
 	{
-		"id" : 3,
-		"url" : "/products/",
+		"id" : "hash3",
+		"url" : "products/",
 		"status_code" : 404,
 		"redirects" : [],
-		"links" : []
+		"page_links" : []
 	}
 ]

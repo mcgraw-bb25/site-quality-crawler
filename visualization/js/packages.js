@@ -10,40 +10,39 @@
         if (!node) {
           node = map[id] = data || {id: id, children: []};
           if (id.length) {
-            console.log(node);
-            node.parent = find(id.substring(0, i = id.lastIndexOf(".")));
+            node.parent = find("");
             node.parent.children.push(node);
-            node.key = id.substring(i + 1);
+            node.key = id;
           }
         }
         return node;
       }
 
       classes.forEach(function (d) {
-        find(d.name, d);
+        find(d.id, d);
       });
 
       return map[""];
     },
 
-    // Return a list of links for the given array of nodes.
-    links: function (nodes) {
+    // Return a list of page_links for the given array of nodes.
+    imports: function (nodes) {
       var map = {},
-          links = [];
+          page_links = [];
 
-      // Compute a map from name to node.
+      // Compute a map from id to node.
       nodes.forEach(function (d) {
-        map[d.name] = d;
+        map[d.id] = d;
       });
 
       // For each import, construct a link from the source to target node.
       nodes.forEach(function (d) {
-        if (d.links) d.links.forEach(function (i) {
-          links.push({source: map[d.name], target: map[i]});
+        if (d.page_links) d.page_links.forEach(function (i) {
+          page_links.push({source: map[d.id], target: map[i]});
         });
       });
 
-      return links;
+      return page_links;
     }
 
   };
