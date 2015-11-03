@@ -1,16 +1,22 @@
-from RequestWrap import RequestWrapper
+from RequestWrapper import RequestWrapper
 import unittest
+
+
+
 
 class MockRequestWrapper(RequestWrapper):
 
-	def __init__(self, url):
+	def __init__(self, url, req_type="GET"):
 		self.url = url
+		self.req_type = req_type.upper()
 		self.text = "</html>"
 		self.content = b"</html>"
 
 	def make_request(self):
 		self.text = "<html>"
 		self.content = self.text.encode()
+
+		return self
 
 class RequestWrapperUnitTest(unittest.TestCase):
 
