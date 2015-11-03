@@ -1,33 +1,27 @@
-import requests
-import os
 
-from mockrequests import LocalFileAdapter
 
-class RequestWrapper(object):
+from RequestWrapper import RequestWrapper
+from MockRequestWrapper import MockRequestWrapper
 
-	def __init__(self, url, mock_request_status = False):
+class PageRequest(RequestWrapper):
+
+	def __init__(self, url):
 		self.url = url
-		self.mock_request_status = mock_request_status
 
-	def GetRequest(self):
-		if self.mock_request_status == False:
-			return requests.get(self.url)
-		else:
-			requests_session = requests.session()
-			requests_session.mount('file://', LocalFileAdapter())
-			test_html_page = 'file://' + os.getcwd() + '/' + self.url
-			test_html_data = requests_session.get(test_html_page)
-			return test_html_data
+	def crawl(self):
+		super().__init__(self.url)
+		print ("Hitting %s url" % (self.url))
+		response = super().make_request()
+		print (response.text[0:50])
+
+
+class MockPageRequest(PageRequest, MockRequestWrapper):
+	pass
+
 
 if __name__ == "__main__":
+	c = PageRequest("http://www.workopolis.com")
+	c.crawl()
 
-	real_site = 'http://www.workopolis.com'
-	real_site_test_status = False
-	real_request = RequestWrapper(real_site, real_site_test_status).GetRequest()
-	print (real_request.text[:500])
-
-	test_site = 'aboutus.html'
-	test_site_test_status = True
-	test_request = RequestWrapper(test_site, test_site_test_status).GetRequest()
-	print (test_request.content[0:500])
-
+	d = MockPageRequest("notrealsite.com")
+	d.crawl()
