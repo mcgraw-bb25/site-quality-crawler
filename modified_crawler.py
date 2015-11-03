@@ -1,6 +1,7 @@
-import datetime
-import requests
 import time
+import datetime
+import json
+from hashlib import md5
 from bs4 import BeautifulSoup
 
 from PageRequest import RequestWrapper
@@ -14,6 +15,7 @@ class PageReport(object):
         page_links=[]
     ):
         self.url = url
+        self.id = md5(self.url).hexdigest()
         self.status_code = status_code
         self.redirects = redirects
         self.page_links = page_links
@@ -25,14 +27,24 @@ class PageReport(object):
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.url == other.url
 
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "url": self.url,
+            # "page_links": self.page_links,
+            "status_code": self.status_code,
+            "redirects": len(self.redirects),
+        }
+
 
 class Crawler(object):
-    def __init__(self, start_url, crawl_limit=5, mock_request_status = False):
+    def __init__(self, start_url, crawl_limit=5, mock_request_status=False):
         self.root_url = start_url
         self.url_queue = [start_url]
         self.crawled_urls = []
         self.crawl_limit = crawl_limit
         self.mock_request_status = mock_request_status
+        self.page_reports = []
 
     def start(self):
         while len(self.url_queue) > 0 and len(self.crawled_urls) < self.crawl_limit:
@@ -66,8 +78,9 @@ class Crawler(object):
                 redirects=response.history,
                 page_links=outgoing_links
             )
-            # TODO: Save page reports
+
             print (page_report)
+            self.page_reports.append(page_report)
 
             self.url_queue += outgoing_links
             self.crawled_urls.append(current_url)
@@ -94,8 +107,9 @@ class Crawler(object):
 
 
 if __name__ == '__main__':
-    #c = Crawler('http://www.workopolis.com/content/about')
-    #c.start()
+    c = Crawler('http://www.workopolis.com/content/about')
+    c.start()
+    print json.dumps([pr.to_dict() for pr in c.page_reports])
 
-    d = Crawler('mysite.html', 5, True)
-    d.start()
+    # d = Crawler('mysite.html', 5, True)
+    # d.start()
