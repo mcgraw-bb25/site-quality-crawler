@@ -1,30 +1,30 @@
 [
 	{
-		"id" : 0,
-		"url" : "www.mysite.com",
+		"name" : "Home",
+		"url" : "http://www.mysite.com",
 		"status_code" : 200,
 		"redirects" : [],
-		"links" : [1, 2, 3]
+		"imports" : ["About", "Login", "Products"]
 	},
 	{
-		"id" : 1,
-		"url" : "/aboutus/",
+		"name" : "About",
+		"url" : "http://www.mysite.com/aboutus/",
 		"status_code" : 200,
-		"redirects" : ["/about/"],
-		"links" : [0]
+		"redirects" : ["http://www.mysite.com/about/"],
+		"imports" : ["Home"]
 	},
 	{
-		"id" : 2,
-		"url" : "/login/",
+		"name" : "Login",
+		"url" : "http://www.mysite.com/login/",
 		"status_code" : 200,
 		"redirects" : [],
-		"links" : []
+		"imports" : []
 	},
 	{
-		"id" : 3,
-		"url" : "/products/",
+		"name" : "Products",
+		"url" : "http://www.mysite.com/products/",
 		"status_code" : 404,
 		"redirects" : [],
-		"links" : []
+		"imports" : []
 	}
 ]
