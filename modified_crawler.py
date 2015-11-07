@@ -45,7 +45,6 @@ class Crawler(object):
         self.crawl_limit = crawl_limit
         self.page_reports = []
 
-
     def start(self):
         while len(self.url_queue) > 0 and len(self.crawled_urls) < self.crawl_limit:
             current_url = self.url_queue.pop(0)
