@@ -17,7 +17,7 @@ class PageRequest(RequestWrapper):
     '''
     def __init__(self, url):
         ''' May want to clean up use of super into init '''
-        self.url = url
+        super().__init__(url)
 
     def crawl(self):
         '''
@@ -26,7 +26,6 @@ class PageRequest(RequestWrapper):
         request method make_request, and contains the logic of the crawler
         Returns the entire response object
         '''
-        super().__init__(self.url)
         # print ("Hitting %s url" % (self.url))
         response = super().make_request()
         # print (response.text[0:50])
