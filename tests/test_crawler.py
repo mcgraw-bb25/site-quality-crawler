@@ -33,3 +33,5 @@ class CrawlerUnitTest(unittest.TestCase):
 
         with open(newfile, 'w') as mockjson:
             mockjson.write(mock_json_data)
+
+        print (mock_json_data)
