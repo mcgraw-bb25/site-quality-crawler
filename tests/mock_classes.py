@@ -1,14 +1,37 @@
 from crawler.request_wrapper import RequestWrapper
 
+import os
+
 
 class MockResponse(object):
     ''' A mock response object returned by MockRequestWrapper '''
     def __init__(self):
-        self.text = "<html>"
+        self.text = "false data"
         self.content = self.text.encode()
 
-    def make_response(self):
-        ''' Returns self to object caller '''
+    def set_text(self, text):
+        ''' Simple setter method for mocking '''
+        self.text = text
+        self.content = text.encode()
+
+    def make_response(self, url):
+        '''
+        Takes in url and sets the responses appropriately
+        Returns self to object caller
+        '''
+
+        curpath = os.getcwd()
+        newpath = curpath + '/tests/example-sites/'
+
+        if url == "localtestsite.com":
+            test_response_data = "<html>"
+            self.set_text(test_response_data)
+        elif url == "http://www.localtestsite.com/mysite.html":
+            testfile = newpath + 'mysite.html'
+            with open(testfile, 'r') as testhtml:
+                test_response_data = testhtml.read()
+            self.set_text(test_response_data)
+
         return self
 
 
@@ -43,5 +66,5 @@ class MockRequestWrapper(RequestWrapper):
         Passes back response
         '''
         mock_response_object = MockResponse()
-        response = mock_response_object.make_response()
+        response = mock_response_object.make_response(self.url)
         return response

@@ -16,7 +16,7 @@ class PageRequestUnitTest(unittest.TestCase):
 
     def test_002(self):
         ''' Looks at a mock url '''
-        mock_site = 'notarealsite.com'
+        mock_site = 'localtestsite.com'
         mock_request_test = MockPageRequest(mock_site).make_request()
         self.assertEqual(mock_request_test.text, "<html>")
         self.assertEqual(mock_request_test.content, b"<html>")
