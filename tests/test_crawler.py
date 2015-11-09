@@ -1,5 +1,6 @@
 import unittest
 import json
+import os
 
 # from crawler.crawler import Crawler
 from tests.mock_classes import MockCrawler
@@ -25,4 +26,10 @@ class CrawlerUnitTest(unittest.TestCase):
         self.assertIn('www.localtestsite.com/mysite.html', mock_json_data)
         self.assertIn('www.localtestsite.com/aboutus.html', mock_json_data)
         self.assertIn('www.localtestsite.com/login.html', mock_json_data)
-        self.assertNotIn('http://www.someoffsiteurl.com/', mock_json_data)
+
+        curpath = os.getcwd()
+        newpath = curpath + '/reports/'
+        newfile = newpath + 'mock_site_report.json'
+
+        with open(newfile, 'w') as mockjson:
+            mockjson.write(mock_json_data)
