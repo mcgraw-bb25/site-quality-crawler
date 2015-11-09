@@ -10,7 +10,6 @@ class MockResponse(object):
         ''' Initializes to a false state to force test coverage '''
         self.text = "false data"
         self.content = self.text.encode()
-        ''' implemented after mock crawler to model Response() '''
         self.status_code = 200
         self.history = []
 
@@ -93,8 +92,8 @@ class MockRequestWrapper(RequestWrapper):
 class MockCrawler(Crawler):
     ''' Implements a mock crawler for testing crawler capabilities '''
 
-    def __init__(self, root_url, start_url=None, crawl_limit=5):
-        super().__init__(root_url, start_url, crawl_limit)
+    def __init__(self, root_url, start_url=None):
+        super().__init__(root_url, start_url)
 
     def get_response(self, current_url):
         ''' Over loads get_response for mock request '''
