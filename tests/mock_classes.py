@@ -6,6 +6,7 @@ import os
 class MockResponse(object):
     ''' A mock response object returned by MockRequestWrapper '''
     def __init__(self):
+        ''' Initializes to a false state to force test coverage '''
         self.text = "false data"
         self.content = self.text.encode()
 
@@ -13,6 +14,14 @@ class MockResponse(object):
         ''' Simple setter method for mocking '''
         self.text = text
         self.content = text.encode()
+
+    def fetch_response(self, filename):
+        ''' Handles the file opening methods and returns text '''
+
+        with open(filename, 'r') as testhtml:
+            test_response_data = testhtml.read()
+
+        return test_response_data
 
     def make_response(self, url):
         '''
@@ -28,8 +37,15 @@ class MockResponse(object):
             self.set_text(test_response_data)
         elif url == "http://www.localtestsite.com/mysite.html":
             testfile = newpath + 'mysite.html'
-            with open(testfile, 'r') as testhtml:
-                test_response_data = testhtml.read()
+            test_response_data = self.fetch_response(testfile)
+            self.set_text(test_response_data)
+        elif url == "http://www.localtestsite.com/aboutus.html":
+            testfile = newpath + 'aboutus.html'
+            test_response_data = self.fetch_response(testfile)
+            self.set_text(test_response_data)
+        elif url == "http://www.localtestsite.com/login.html":
+            testfile = newpath + 'login.html'
+            test_response_data = self.fetch_response(testfile)
             self.set_text(test_response_data)
 
         return self
