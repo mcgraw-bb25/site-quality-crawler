@@ -54,6 +54,34 @@ class Crawler(object):
             print(page_report)
             self.sleep()
 
+        self.clean_pageid()
+
+    def clean_pageid(self):
+        '''
+        This method cleans the page ids in page report
+        so that page_links receives the hashes rather than the url
+
+        Invoked by start_crawl()
+        Probably requires a discussion with Mateusz sometime
+        '''
+
+        # initialize dictionary to hold url : id
+        page_set = {}
+
+        # run through page reports and append to page_set dic
+        for page in self.page_reports:
+            url_name = page.url
+            url_id = page.id
+            page_set[url_name] = url_id
+
+        # run through page reports again and swap page_links url with id
+        for page in self.page_reports:
+            position_counter = 0
+            for i in range(len(page.page_links)):
+                page_id = page_set[page.page_links[i]]
+                page.page_links[i] = page_id
+            position_counter = position_counter + 1
+
     def get_absolute_page_links(self, current_url, response):
         '''
         Parses a page and returns all links on the page in absolute form
@@ -63,7 +91,8 @@ class Crawler(object):
         for tag in page_soup.find_all('a'):
             if tag.has_attr('href'):
                 url = self.get_absolute_url(current_url, tag.get('href'))
-                links.append(url)
+                if not self.is_outbound_url(url):
+                    links.append(url)
         return links
 
     def get_absolute_url(self, base_url, link_url):
