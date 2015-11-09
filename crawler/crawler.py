@@ -36,7 +36,7 @@ class Crawler(object):
                 continue
 
             try:
-                response = PageRequest(current_url).make_request()
+                response = self.get_response(current_url)
             except:
                 # TODO: Put malformed urls in page report
                 print('Skipping malformed URL - ', current_url)
@@ -92,6 +92,10 @@ class Crawler(object):
         Used to delay between requests while crawling
         '''
         time.sleep(2)
+
+    def get_response(self, current_url):
+        ''' Hides PageRequest which allows for mocking '''
+        return PageRequest(current_url).make_request()
 
 
 if __name__ == '__main__':
