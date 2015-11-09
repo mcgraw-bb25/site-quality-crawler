@@ -1,5 +1,7 @@
 import time
 import json
+import os
+
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from crawler.page_request import PageRequest
@@ -78,8 +80,11 @@ class Crawler(object):
         for page in self.page_reports:
             position_counter = 0
             for i in range(len(page.page_links)):
-                page_id = page_set[page.page_links[i]]
-                page.page_links[i] = page_id
+                try:
+                    page_id = page_set[page.page_links[i]]
+                    page.page_links[i] = page_id
+                except:
+                    continue
             position_counter = position_counter + 1
 
     def get_absolute_page_links(self, current_url, response):
@@ -128,8 +133,17 @@ class Crawler(object):
 
 
 if __name__ == '__main__':
-    c = Crawler(
+    real_crawler = Crawler(
         root_url='http://www.workopolis.com/',
-        start_url='http://www.workopolis.com/content/about')
-    c.start_crawl()
-    print (json.dumps([pr.get_dictionary() for pr in c.page_reports]))
+        start_url='http://www.workopolis.com/content/about',
+        crawl_limit=5)
+    real_crawler.start_crawl()
+    print (json.dumps([pr.get_dictionary() for pr in real_crawler.page_reports]))
+    prod_json_data = (json.dumps([pr.get_dictionary() for pr in real_crawler.page_reports]))
+    
+    curpath = os.getcwd()
+    newpath = curpath + '/reports/'
+    newfile = newpath + 'prod_site_report.json'
+
+    with open(newfile, 'w') as prodjson:
+        prodjson.write(prod_json_data)
