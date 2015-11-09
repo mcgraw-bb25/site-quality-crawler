@@ -1,111 +1,102 @@
 import time
-import datetime
 import json
-from hashlib import md5
+from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-
-from PageRequest import PageRequest
-
-
-class PageReport(object):
-    def __init__(
-        self, url, date,
-        status_code=200,
-        redirects=[],
-        page_links=[]
-    ):
-        self.url = url
-        self.id = md5(self.url.encode()).hexdigest()
-        self.status_code = status_code
-        self.redirects = redirects
-        self.page_links = page_links
-        self.date = date
-
-    def __str__(self):
-        return "Page: %s (%s) - Redirects %s" % (self.url, self.status_code, len(self.redirects))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.url == other.url
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "url": self.url,
-            # "page_links": self.page_links,
-            "status_code": self.status_code,
-            "redirects": len(self.redirects),
-        }
+from crawler.page_request import PageRequest
+from crawler.page_report import PageReport
 
 
 class Crawler(object):
-    def __init__(self, start_url, crawl_limit=5):
-        self.root_url = start_url
-        self.url_queue = [start_url]
-        self.crawled_urls = []
-        self.crawl_limit = crawl_limit
-        self.page_reports = []
+    '''
+    The main crawler object that the user interacts with
+    '''
+    crawled_urls = []
+    page_reports = []
 
-    def start(self):
-        while len(self.url_queue) > 0 and len(self.crawled_urls) < self.crawl_limit:
+    def __init__(self, root_url, start_url=None, crawl_limit=5):
+        self.root_url = root_url
+        if start_url:
+            self.start_url = start_url
+        else:
+            self.start_url = root_url
+        self.crawl_limit = crawl_limit
+
+    def start_crawl(self):
+        '''
+        Begins crawling the given site at the initialized start_url
+        '''
+        self.url_queue = [self.start_url]
+        while self.url_queue and len(self.crawled_urls) < self.crawl_limit:
             current_url = self.url_queue.pop(0)
 
             if current_url in self.crawled_urls:
                 continue
-
-            if self.outbound_link(current_url):
-                print ("Skipping outbound url ", current_url)
+            if self.is_outbound_url(current_url):
+                print("Skipping outbound url ", current_url)
                 continue
 
             try:
-                response = PageRequest(current_url).crawl()
-                page_soup = BeautifulSoup(response.content, 'html.parser')
+                response = PageRequest(current_url).make_request()
             except:
                 # TODO: Put malformed urls in page report
-                print('Exception: Malformed URL ', current_url)
-
-            outgoing_links = []
-            for tag in page_soup.find_all('a'):
-                if tag.has_attr('href'):
-                    url = tag.get('href')
-                    url = self.make_url_absolute_path(url, current_url)
-                    outgoing_links.append(url)
+                print('Skipping malformed URL - ', current_url)
+                continue
 
             page_report = PageReport(
                 url=current_url,
-                date=datetime.datetime.now(),
                 status_code=response.status_code,
                 redirects=response.history,
-                page_links=outgoing_links
-            )
+                page_links=self.get_absolute_page_links(current_url, response))
 
-            print (page_report)
+            self.url_queue += page_report.page_links
             self.page_reports.append(page_report)
-
-            self.url_queue += outgoing_links
             self.crawled_urls.append(current_url)
-
+            print(page_report)
             self.sleep()
 
-    def sleep(self):
-        time.sleep(2)
+    def get_absolute_page_links(self, current_url, response):
+        '''
+        Parses a page and returns all links on the page in absolute form
+        '''
+        page_soup = BeautifulSoup(response.content, 'html.parser')
+        links = []
+        for tag in page_soup.find_all('a'):
+            if tag.has_attr('href'):
+                url = self.get_absolute_url(current_url, tag.get('href'))
+                links.append(url)
+        return links
 
-    def make_url_absolute_path(self, url, current_url):
-        if url.startswith('http://') or url.startswith('https://'):
-            return url
+    def get_absolute_url(self, base_url, link_url):
+        '''
+        Given a root and a url returns the absolute url
+        '''
+        if link_url.startswith('http://') or link_url.startswith('https://'):
+            return link_url
+        return urljoin(base_url, link_url)
 
-        if url.startswith('/'):
-            return "http://www.workopolis.com%s" % (url)
-
-        if current_url.endswith('/'):
-            return "%s%s" % (current_url, url)
-        else:
-            return "%s/%s" % (current_url, url)
-
-    def outbound_link(self, url):
+    def is_outbound_url(self, url):
+        '''
+        Returns true when url is outside the domain of the root url
+        '''
         return not url.startswith(self.root_url)
+
+    def save_page_reports():
+        '''
+        Unimplemented
+        '''
+        # TODO: save results to database or a file
+        pass
+
+    def sleep(self):
+        '''
+        Used to delay between requests while crawling
+        '''
+        time.sleep(2)
 
 
 if __name__ == '__main__':
-    c = Crawler('http://www.workopolis.com/content/about')
-    c.start()
-    print (json.dumps([pr.to_dict() for pr in c.page_reports]))
+    c = Crawler(
+        root_url='http://www.workopolis.com/',
+        start_url='http://www.workopolis.com/content/about')
+    c.start_crawl()
+    print (json.dumps([pr.get_dictionary() for pr in c.page_reports]))
