@@ -32,7 +32,7 @@ class PageReport(object):
         return {
             "id": self.id,
             "url": self.url,
-            # "page_links": self.page_links,
+            "page_links": self.page_links,
             "status_code": self.status_code,
             "redirects": len(self.redirects),
         }
