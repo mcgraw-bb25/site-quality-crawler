@@ -46,6 +46,7 @@ class ReportBuilder(PageReport):
         timestamp_string = str(now.year) \
             + "_" + str(now.month) \
             + "_" + str(now.day) \
+            + "_" + str(now.hour) \
             + "_" + str(now.minute) \
             + "_" + str(now.second)
 
