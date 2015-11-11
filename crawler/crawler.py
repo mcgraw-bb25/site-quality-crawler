@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from crawler.page_request import PageRequest
 from crawler.page_report import PageReport
+from crawler.report_builder import ReportBuilder
 
 
 class Crawler(object):
@@ -53,39 +54,14 @@ class Crawler(object):
             self.url_queue += page_report.page_links
             self.page_reports.append(page_report)
             self.crawled_urls.append(current_url)
-            print(page_report)
+            # print(page_report)
             self.sleep()
 
-        self.clean_pageid()
+        self.build_report()
 
-    def clean_pageid(self):
-        '''
-        This method cleans the page ids in page report
-        so that page_links receives the hashes rather than the url
-
-        Invoked by start_crawl()
-        Probably requires a discussion with Mateusz sometime
-        '''
-
-        # initialize dictionary to hold url : id
-        page_set = {}
-
-        # run through page reports and append to page_set dic
-        for page in self.page_reports:
-            url_name = page.url
-            url_id = page.id
-            page_set[url_name] = url_id
-
-        # run through page reports again and swap page_links url with id
-        for page in self.page_reports:
-            position_counter = 0
-            for i in range(len(page.page_links)):
-                try:
-                    page_id = page_set[page.page_links[i]]
-                    page.page_links[i] = page_id
-                except:
-                    continue
-            position_counter = position_counter + 1
+    def build_report(self):
+        ''' invokes ReportBuilder '''
+        ReportBuilder(self.page_reports).build_report()
 
     def get_absolute_page_links(self, current_url, response):
         '''
@@ -139,11 +115,3 @@ if __name__ == '__main__':
         crawl_limit=5)
     real_crawler.start_crawl()
     print (json.dumps([pr.get_dictionary() for pr in real_crawler.page_reports]))
-    prod_json_data = (json.dumps([pr.get_dictionary() for pr in real_crawler.page_reports]))
-    
-    curpath = os.getcwd()
-    newpath = curpath + '/reports/'
-    newfile = newpath + 'prod_site_report.json'
-
-    with open(newfile, 'w') as prodjson:
-        prodjson.write(prod_json_data)
