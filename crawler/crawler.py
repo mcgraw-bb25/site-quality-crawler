@@ -1,7 +1,4 @@
 import time
-import json
-import os
-
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from crawler.page_request import PageRequest
@@ -54,14 +51,13 @@ class Crawler(object):
             self.url_queue += page_report.page_links
             self.page_reports.append(page_report)
             self.crawled_urls.append(current_url)
-            # print(page_report)
             self.sleep()
 
         self.build_report()
 
-    def build_report(self):
-        ''' invokes ReportBuilder '''
-        ReportBuilder(self.page_reports).build_report()
+    def get_response(self, current_url):
+        ''' Hides PageRequest which allows for mocking '''
+        return PageRequest(current_url).make_request()
 
     def get_absolute_page_links(self, current_url, response):
         '''
@@ -90,22 +86,15 @@ class Crawler(object):
         '''
         return not url.startswith(self.root_url)
 
-    def save_page_reports():
-        '''
-        Unimplemented
-        '''
-        # TODO: save results to database or a file
-        pass
-
     def sleep(self):
         '''
         Used to delay between requests while crawling
         '''
         time.sleep(2)
 
-    def get_response(self, current_url):
-        ''' Hides PageRequest which allows for mocking '''
-        return PageRequest(current_url).make_request()
+    def build_report(self):
+        ''' invokes ReportBuilder '''
+        ReportBuilder(self.page_reports).build_report()
 
 
 if __name__ == '__main__':
@@ -114,4 +103,3 @@ if __name__ == '__main__':
         start_url='http://www.workopolis.com/content/about',
         crawl_limit=5)
     real_crawler.start_crawl()
-    print (json.dumps([pr.get_dictionary() for pr in real_crawler.page_reports]))
