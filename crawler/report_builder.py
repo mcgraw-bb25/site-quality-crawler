@@ -38,7 +38,7 @@ class ReportBuilder(PageReport):
                     pr.page_links[i] = None
             # The visualization will throw an error on unknown IDs
             # We remove the key errors below
-            pr.page_links = list(filter((None), pr.page_links))
+            pr.page_links = list(filter(None, pr.page_links))
 
     def save_report(self):
         ''' Method to implement saving report '''
