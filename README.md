@@ -4,9 +4,8 @@ A tool that crawls a website and reports the HTTP response codes and redirects f
 The results will be displayed as a dynamic site map.
 
 ### Contributors
-
-Matt McGraw
-Mateusz Bocian
+* Matt McGraw
+* Mateusz Bocian
 
 ### Running Crawler
 ```
