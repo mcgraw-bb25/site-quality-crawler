@@ -9,9 +9,8 @@ The results will be displayed as a dynamic site map.
 
 ### Running Crawler
 ```
-python -m server
+python3 -m server
 ```
-Note: still using old python until I figure out venv
 
 ### Running Crawler
 ```
