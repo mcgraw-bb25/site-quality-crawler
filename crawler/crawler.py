@@ -44,6 +44,7 @@ class Crawler(object):
 
             page_report = PageReport(
                 url=current_url,
+                root_url=self.root_url,
                 status_code=response.status_code,
                 redirects=response.history,
                 page_links=self.get_absolute_page_links(current_url, response))

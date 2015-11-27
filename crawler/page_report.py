@@ -8,12 +8,14 @@ class PageReport(object):
     '''
     def __init__(
         self, url,
+        root_url='',
         status_code=200,
         redirects=[],
         page_links=[]
     ):
-        self.url = url
         self.id = md5(url.encode()).hexdigest()
+        self.url = url
+        self.root_url = root_url
         self.status_code = status_code
         self.redirects = redirects
         self.page_links = page_links
@@ -31,7 +33,7 @@ class PageReport(object):
         '''
         return {
             "id": self.id,
-            "url": self.url,
+            "url": self.url.replace(self.root_url, '/'),
             "page_links": self.page_links,
             "status_code": self.status_code,
             "redirects": len(self.redirects),

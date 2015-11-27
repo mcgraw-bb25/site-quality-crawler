@@ -10,7 +10,8 @@ def index():
 
 @app.route("/site_report.json")
 def polls_json():
-    with open("reports/site_report.json", 'r') as report_file:
+    report_json = "reports/site_report.json"
+    with open(report_json, 'r') as report_file:
         return report_file.read()
 
 

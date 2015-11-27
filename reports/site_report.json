@@ -1,30 +1,70 @@
 [
-	{
-		"id" : "hash0",
-		"url" : "http://www.mysite.com/",
-		"status_code" : 200,
-		"redirects" : [],
-		"page_links" : ["hash1", "hash2", "hash3"]
-	},
-	{
-		"id" : "hash1",
-		"url" : "aboutus/",
-		"status_code" : 200,
-		"redirects" : ["/about/"],
-		"page_links" : ["hash0"]
-	},
-	{
-		"id" : "hash2",
-		"url" : "login/",
-		"status_code" : 200,
-		"redirects" : [],
-		"page_links" : []
-	},
-	{
-		"id" : "hash3",
-		"url" : "products/",
-		"status_code" : 404,
-		"redirects" : [],
-		"page_links" : []
-	}
+    {
+        "url": "/content/about",
+        "id": "3bbf2e1af751172dce5aa0a930f984c4",
+        "status_code": 200,
+        "page_links": [
+            "3bbf2e1af751172dce5aa0a930f984c4",
+            "7b223435749fad21da24d860cda01615",
+            "3bbf2e1af751172dce5aa0a930f984c4",
+            "7b223435749fad21da24d860cda01615",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "fed4b39aa7cf3598c86dce3abeb07e76",
+            "fdb31947e8b098f397bab4a29a3f3a82"
+        ],
+        "redirects": 1
+    },
+    {
+        "url": "/content/about?lang=fr",
+        "id": "7b223435749fad21da24d860cda01615",
+        "status_code": 200,
+        "page_links": [
+            "3bbf2e1af751172dce5aa0a930f984c4",
+            "7b223435749fad21da24d860cda01615",
+            "3bbf2e1af751172dce5aa0a930f984c4",
+            "7b223435749fad21da24d860cda01615"
+        ],
+        "redirects": 1
+    },
+    {
+        "url": "/",
+        "id": "2035d883af6d32ac9e3ca5fd4ca099c9",
+        "status_code": 200,
+        "page_links": [
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "2035d883af6d32ac9e3ca5fd4ca099c9",
+            "3bbf2e1af751172dce5aa0a930f984c4"
+        ],
+        "redirects": 1
+    },
+    {
+        "url": "/EN/Common/SearchJobs.aspx",
+        "id": "fed4b39aa7cf3598c86dce3abeb07e76",
+        "status_code": 200,
+        "page_links": [
+            "fed4b39aa7cf3598c86dce3abeb07e76",
+            "3bbf2e1af751172dce5aa0a930f984c4"
+        ],
+        "redirects": 0
+    },
+    {
+        "url": "/content/about/job-search-tools",
+        "id": "fdb31947e8b098f397bab4a29a3f3a82",
+        "status_code": 200,
+        "page_links": [
+            "7b223435749fad21da24d860cda01615",
+            "7b223435749fad21da24d860cda01615",
+            "2035d883af6d32ac9e3ca5fd4ca099c9"
+        ],
+        "redirects": 1
+    }
 ]
