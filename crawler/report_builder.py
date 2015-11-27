@@ -51,8 +51,9 @@ class ReportBuilder(PageReport):
             + "_" + str(now.second)
 
         curpath = os.getcwd()
-        newpath = curpath + '/reports/'
-        newfile = newpath + 'site_report-' + timestamp_string + '.json'
+        file_path = curpath + '/reports/'
+        file_name = file_path + 'site_report-' + timestamp_string + '.json'
 
-        with open(newfile, 'w') as reportfile:
+        print("Saving report to %s" % file_name)
+        with open(file_name, 'w') as reportfile:
             reportfile.write(self.json_report)
