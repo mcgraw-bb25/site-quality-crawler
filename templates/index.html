@@ -7,10 +7,17 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="/static/styles/main.css">
 	</head>
-	<body>
-		<script src="/static/scripts/d3.js"></script>
-		<script src="/static/scripts/d3.layout.js"></script>
-  		<script src="/static/scripts/packages.js"></script>
-  		<script src="/static/scripts/index.js"></script>
-	</body>
+	
+	{% block body %}
+		<h1> Which report do you want to view? </h1>
+	{% endblock %}
+
+	  	<ul class=reports>
+  			{% for report in reports %}
+ 				<li><a href="{{ url_for('.site_report', site_report_file=report) }}">{{ report }}</a></li>
+  			{% else %}
+    			<li><em>Unbelievable.  No entries here so far</em></li>
+  			{% endfor %}
+  		</ul>
+
 </html>
