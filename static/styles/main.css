@@ -95,8 +95,10 @@ path.arc {
 }
 
 .node { font-size: 12px; }
-.node:hover { fill: #1f77b4; }
 .node.warning { fill: #F55858; }
+
+.node:hover,
+.node.warning:hover { fill: #1f77b4; }
 
 .link {
   fill: none;

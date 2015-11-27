@@ -56,7 +56,13 @@ d3.json("/site_report.json", function(classes) {
   svg.selectAll("g.node")
   .data(nodes.filter(function (n) { return !n.children; }))
   .enter().append("svg:g")
-  .attr("class", "node")
+  .attr("class", function (d) {
+    if (d.redirects > 0) {
+      console.log(d);
+      return "node warning";
+    }
+    return "node";
+  })
   .attr("id", function (d) { return "node-" + d.key; })
   .attr("transform", function (d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
   .append("svg:text")
