@@ -24,9 +24,9 @@ class CrawlerUnitTest(unittest.TestCase):
         mock_json_data = (json.dumps([pr.get_dictionary()
                           for pr in mock_crawler.page_reports]))
 
-        self.assertIn('www.localtestsite.com/mysite.html', mock_json_data)
-        self.assertIn('www.localtestsite.com/aboutus.html', mock_json_data)
-        self.assertIn('www.localtestsite.com/login.html', mock_json_data)
+        self.assertIn('/mysite.html', mock_json_data)
+        self.assertIn('/aboutus.html', mock_json_data)
+        self.assertIn('/login.html', mock_json_data)
 
         curpath = os.getcwd()
         newpath = curpath + '/reports/'
@@ -50,7 +50,7 @@ class CrawlerUnitTest(unittest.TestCase):
         
         sorted_mock_json_report = sorted(mock_json_report,
                                         key=lambda item: item['id'])
-        pprint (sorted_mock_json_report)
+        
         self.assertIsNotNone(mock_json_report)
         self.assertEqual(len(sorted_mock_json_report), 3)
         self.assertEqual("2ab6b60a90d8cb488975931523f2c401",\
@@ -63,3 +63,6 @@ class CrawlerUnitTest(unittest.TestCase):
                                     sorted_mock_json_report[0]['page_links'])
         self.assertIn("c1260fd9d3d8e6ab5ddf493668b98537",\
                                     sorted_mock_json_report[0]['page_links'])
+
+if __name__ == "__main__":
+    unittest.main()
