@@ -114,7 +114,7 @@ path.arc {
 
 .link {
   fill: none;
-  stroke: #1f77b4;
+  stroke: #aaa;
   stroke-opacity: .4;
   pointer-events: none;
 }
@@ -125,11 +125,11 @@ path.arc {
 }
 
 .node.target {
-  fill: #d62728 !important;
+  fill: #1f77b4 !important;
 }
 
 .link.source {
-  stroke: #d62728;
+  stroke: #1f77b4;
 }
 
 .node.source {
