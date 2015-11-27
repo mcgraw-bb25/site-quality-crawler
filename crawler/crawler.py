@@ -51,6 +51,7 @@ class Crawler(object):
 
             self.url_queue += page_report.page_links
             self.page_reports.append(page_report)
+            print(page_report)
             self.crawled_urls.append(current_url)
             self.sleep()
 
