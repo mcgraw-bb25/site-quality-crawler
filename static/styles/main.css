@@ -72,26 +72,16 @@ h3 {
   color: #7f9f7f;
 }
 
-.string, .regexp {
-  color: #f39;
-}
-
-.keyword {
-  color: #00c;
-}
+.string, .regexp { color: #f39; }
+.keyword { color: #00c; }
 
 .comment {
   color: #777;
   font-style: oblique;
 }
 
-.number {
-  color: #369;
-}
-
-.class, .special {
-  color: #1181B8;
-}
+.number { color: #369; }
+.class, .special { color: #1181B8; }
 
 body > svg {
   position: absolute;
@@ -104,13 +94,9 @@ path.arc {
   fill: #fff;
 }
 
-.node {
-  font-size: 10px;
-}
-
-.node:hover {
-  fill: #1f77b4;
-}
+.node { font-size: 12px; }
+.node:hover { fill: #1f77b4; }
+.node.warning { fill: #F55858; }
 
 .link {
   fill: none;
@@ -124,18 +110,8 @@ path.arc {
   stroke-width: 2px;
 }
 
-.node.target {
-  fill: #1f77b4 !important;
-}
+.node.target { fill: #1f77b4 !important; }
+.link.target { stroke: #2ca02c; }
 
-.link.source {
-  stroke: #1f77b4;
-}
-
-.node.source {
-  fill: #2ca02c;
-}
-
-.link.target {
-  stroke: #2ca02c;
-}
+.link.source { stroke: #1f77b4; }
+.node.source { fill: #2ca02c; }
