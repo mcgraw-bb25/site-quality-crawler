@@ -9,14 +9,14 @@ var splines = [];
 
 var cluster = d3.layout.cluster()
 .size([360, ry - 120])
-.sort(function(a, b) { return d3.ascending(a.key, b.key); });
+.sort(function (a, b) { return d3.ascending(a.key, b.key); });
 
 var bundle = d3.layout.bundle();
 
 var line = d3.svg.line.radial()
 .interpolate("bundle")
-.radius(function(d) { return d.y; })
-.angle(function(d) { return d.x / 180 * Math.PI; });
+.radius(function (d) { return d.y; })
+.angle(function (d) { return d.x / 180 * Math.PI; });
 
 var div = d3.select("body")
   .insert("div")
@@ -38,7 +38,7 @@ svg.append("svg:path")
 .attr("d", d3.svg.arc().outerRadius(ry - 120).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
 .on("mousedown", mousedown);
 
-d3.json("site_report.json", function(classes) {
+d3.json("site_report.json", function (classes) {
   var nodes = cluster.nodes(packages.root(classes)),
   links = packages.imports(nodes),
   splines = bundle(links);
@@ -46,21 +46,25 @@ d3.json("site_report.json", function(classes) {
   var path = svg.selectAll("path.link")
   .data(links)
   .enter().append("svg:path")
-  .attr("class", function(d) { return "link source-" + d.source.key + " target-" + d.target.key; })
-  .attr("d", function(d, i) { return line(splines[i]); });
+  .attr("class", function (d) { return "link source-" + d.source.key + " target-" + d.target.key; })
+  .attr("d", function (d, i) {
+    if (splines[i].length == 3) {
+      return line(splines[i]);
+    }
+  });
 
   svg.selectAll("g.node")
-  .data(nodes.filter(function(n) { return !n.children; }))
+  .data(nodes.filter(function (n) { return !n.children; }))
   .enter().append("svg:g")
   .attr("class", "node")
-  .attr("id", function(d) { return "node-" + d.key; })
-  .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+  .attr("id", function (d) { return "node-" + d.key; })
+  .attr("transform", function (d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
   .append("svg:text")
-  .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
+  .attr("dx", function (d) { return d.x < 180 ? 8 : -8; })
   .attr("dy", ".31em")
-  .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-  .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-  .text(function(d) { return d.url; })
+  .attr("text-anchor", function (d) { return d.x < 180 ? "start" : "end"; })
+  .attr("transform", function (d) { return d.x < 180 ? null : "rotate(180)"; })
+  .text(function (d) { return d.url; })
   .on("mouseover", mouseover)
   .on("mouseout", mouseout);
 });
@@ -69,16 +73,16 @@ d3.select(window)
 .on("mousemove", mousemove)
 .on("mouseup", mouseup);
 
-function mouse(e) {
+function mouse (e) {
   return [e.pageX - rx, e.pageY - ry];
 }
 
-function mousedown() {
+function mousedown () {
   m0 = mouse(d3.event);
   d3.event.preventDefault();
 }
 
-function mousemove() {
+function mousemove () {
   if (m0) {
     var m1 = mouse(d3.event),
     dm = Math.atan2(cross(m0, m1), dot(m0, m1)) * 180 / Math.PI;
@@ -86,7 +90,7 @@ function mousemove() {
   }
 }
 
-function mouseup() {
+function mouseup () {
   if (m0) {
     var m1 = mouse(d3.event),
     dm = Math.atan2(cross(m0, m1), dot(m0, m1)) * 180 / Math.PI;
@@ -101,13 +105,13 @@ function mouseup() {
     svg
     .attr("transform", "translate(" + rx + "," + ry + ")rotate(" + rotate + ")")
     .selectAll("g.node text")
-    .attr("dx", function(d) { return (d.x + rotate) % 360 < 180 ? 8 : -8; })
-    .attr("text-anchor", function(d) { return (d.x + rotate) % 360 < 180 ? "start" : "end"; })
-    .attr("transform", function(d) { return (d.x + rotate) % 360 < 180 ? null : "rotate(180)"; });
+    .attr("dx", function (d) { return (d.x + rotate) % 360 < 180 ? 8 : -8; })
+    .attr("text-anchor", function (d) { return (d.x + rotate) % 360 < 180 ? "start" : "end"; })
+    .attr("transform", function (d) { return (d.x + rotate) % 360 < 180 ? null : "rotate(180)"; });
   }
 }
 
-function mouseover(d) {
+function mouseover (d) {
   svg.selectAll("path.link.target-" + d.key)
   .classed("target", true)
   .each(updateNodes("source", true));
@@ -117,7 +121,7 @@ function mouseover(d) {
   .each(updateNodes("target", true));
 }
 
-function mouseout(d) {
+function mouseout (d) {
   svg.selectAll("path.link.source-" + d.key)
   .classed("source", false)
   .each(updateNodes("target", false));
@@ -127,17 +131,17 @@ function mouseout(d) {
   .each(updateNodes("source", false));
 }
 
-function updateNodes(id, value) {
-  return function(d) {
+function updateNodes (id, value) {
+  return function (d) {
     if (value) this.parentNode.appendChild(this);
     svg.select("#node-" + d[id].key).classed(id, value);
   };
 }
 
-function cross(a, b) {
+function cross (a, b) {
   return a[0] * b[1] - a[1] * b[0];
 }
 
-function dot(a, b) {
+function dot (a, b) {
   return a[0] * b[0] + a[1] * b[1];
 }
