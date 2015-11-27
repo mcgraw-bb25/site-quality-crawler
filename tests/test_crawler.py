@@ -4,6 +4,7 @@ import os
 
 # from crawler.crawler import Crawler
 from tests.mock_classes import MockCrawler
+from pprint import pprint
 
 
 class CrawlerUnitTest(unittest.TestCase):
@@ -34,8 +35,6 @@ class CrawlerUnitTest(unittest.TestCase):
         with open(newfile, 'w') as mockjson:
             mockjson.write(mock_json_data)
 
-        # print (mock_json_data)
-
     def test_002(self):
         ''' Tests output of mock crawler '''
 
@@ -46,29 +45,21 @@ class CrawlerUnitTest(unittest.TestCase):
 
         with open(newfile, 'r') as mockjsonreport:
             mock_json_report = mockjsonreport.read()
-
-        # print (mock_json_report)
+        
+        mock_json_report = json.loads(mock_json_report)
+        
+        sorted_mock_json_report = sorted(mock_json_report,
+                                        key=lambda item: item['id'])
+        pprint (sorted_mock_json_report)
         self.assertIsNotNone(mock_json_report)
-        self.assertIn('www.localtestsite.com/mysite.html', mock_json_report)
-        self.assertIn('www.localtestsite.com/aboutus.html', mock_json_report)
-        self.assertIn('www.localtestsite.com/login.html', mock_json_report)
-
-        '''
-        This entire section doesn't work because the dict builder
-        produces different json files on each run.
-
-        Should discuss with Mateusz
-
-        # initialize known test output
-        curpath = os.getcwd()
-        newpath = curpath + '/tests/'
-        newfile = newpath + 'mock_test_output.json'
-
-        with open(newfile, 'r') as knownjsonreport:
-            known_json_report = knownjsonreport.read()
-
-        print (known_json_report)
-        self.assertIsNotNone(known_json_report)
-
-        self.assertEqual(mock_json_report, known_json_report)
-        '''
+        self.assertEqual(len(sorted_mock_json_report), 3)
+        self.assertEqual("2ab6b60a90d8cb488975931523f2c401",\
+                                    sorted_mock_json_report[0]['id'])
+        self.assertEqual("c1260fd9d3d8e6ab5ddf493668b98537",\
+                                    sorted_mock_json_report[1]['id'])
+        self.assertEqual("fc063341aba1a257f83bb1652eac3079",\
+                                    sorted_mock_json_report[2]['id'])
+        self.assertIn("fc063341aba1a257f83bb1652eac3079",\
+                                    sorted_mock_json_report[0]['page_links'])
+        self.assertIn("c1260fd9d3d8e6ab5ddf493668b98537",\
+                                    sorted_mock_json_report[0]['page_links'])
