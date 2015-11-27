@@ -21,3 +21,7 @@ python3 -m crawler.crawler
 ```
 python3 -m unittest discover -p "test_*.py"
 ```
+
+
+hover over a page - display json
+d3 colours
