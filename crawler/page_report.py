@@ -22,7 +22,7 @@ class PageReport(object):
         self.date = datetime.datetime.now()
 
     def __str__(self):
-        return "Page: %s (%s)" % (self.url, self.status_code)
+        return "%s (%s)" % (self.url, self.status_code)
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.url == other.url
