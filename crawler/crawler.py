@@ -1,9 +1,22 @@
 import time
+import argparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from crawler.page_request import PageRequest
 from crawler.page_report import PageReport
 from crawler.report_builder import ReportBuilder
+
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--root", type=str, 
+                help="The root url of pages to crawl")
+parser.add_argument("--start", type=str, 
+                help="The entry url for crawl.")
+parser.add_argument("--limit", type=int, 
+                help="Maximum number of pages to crawl")
+
+args = parser.parse_args()
 
 
 class Crawler(object):
@@ -101,7 +114,7 @@ class Crawler(object):
 
 if __name__ == '__main__':
     real_crawler = Crawler(
-        root_url='http://www.workopolis.com/',
-        start_url='http://www.workopolis.com/content/about',
-        crawl_limit=5)
+        root_url=args.root,
+        start_url=args.start,
+        crawl_limit=args.limit)
     real_crawler.start_crawl()
