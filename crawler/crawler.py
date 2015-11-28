@@ -101,15 +101,14 @@ class Crawler(object):
 
 
 if __name__ == '__main__':
-    
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--root", type=str, 
-                    help="The root url of pages to crawl")
-    parser.add_argument("--start", type=str, 
-                    help="The entry url for crawl.")
-    parser.add_argument("--limit", type=int, 
-                    help="Maximum number of pages to crawl")
+    parser.add_argument("--root", type=str,
+                        help="The root url of pages to crawl")
+    parser.add_argument("--start", type=str,
+                        help="The entry url for crawl.")
+    parser.add_argument("--limit", type=int,
+                        help="Maximum number of pages to crawl")
 
     args = parser.parse_args()
 
