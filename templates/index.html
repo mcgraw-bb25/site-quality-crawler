@@ -1,24 +1,18 @@
-<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title></title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/styles/main.css">
 	</head>
-	
-	{% block body %}
-		Which report do you want to view?
-	
-
-	  	<ul class=reports>
-  			{% for report in reports %}
- 				<li><a href="{{ url_for('.site_report', site_report_file=report) }}">{{ report }}</a></li>
-  			{% else %}
-    			<li><em>Unbelievable.  No entries here so far</em></li>
-  			{% endfor %}
-  		</ul>
-
-  	{% endblock %}
+	<body>
+		<h2>Which report do you want to view?</h2>
+		<ul>
+			{% for report in site_reports %}
+				<li><a href="{{ url_for('.site_report', filename=report) }}">{{ report }}</a></li>
+			{% else %}
+				<li><em>No site reports found. Try running the crawler.</em></li>
+			{% endfor %}
+		</ul>
+	</body>
 </html>

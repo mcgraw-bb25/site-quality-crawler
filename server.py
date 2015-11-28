@@ -4,28 +4,24 @@ from flask import render_template
 from flask import send_from_directory
 from app.get_report_list import get_report_list
 
-
 app = Flask(__name__)
+reports_directory = '/reports/'
 
 
 @app.route('/')
 def index():
-    reports = get_report_list()
-    return render_template('index.html', reports=reports)
+    return render_template('index.html', site_reports=get_report_list())
 
 
-@app.route('/site_report/<site_report_file>')
-def site_report(site_report_file):
-    report_filename = '/reports/' + site_report_file
-    return render_template('site_report.html', site_report_file=report_filename)
+@app.route('/site_report/<filename>')
+def site_report(filename):
+    report_filename = reports_directory + filename
+    return render_template('site_report.html', site_report=report_filename)
 
 
 @app.route('/reports/<path:filename>')
 def send_json(filename):
-    curpath = os.getcwd()
-    newpath = curpath + '/reports/'
-    return send_from_directory(newpath, filename)
-
+    return send_from_directory(os.getcwd() + reports_directory, filename)
 
 if __name__ == "__main__":
     app.run()
