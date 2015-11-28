@@ -111,9 +111,46 @@ if __name__ == '__main__':
                         help="Maximum number of pages to crawl")
 
     args = parser.parse_args()
+    if args.root is None:
+        user_root = ""    
+    else:
+        user_root = args.root
+
+    if args.start is None:
+        user_start = ""
+    else:
+        user_start = args.start
+
+    if args.limit is None:
+        user_limit = ""
+    else:
+        user_limit = args.limit
+
+    if not user_root.startswith('http'):
+        while not user_root.startswith('http'):
+            user_root = input("Please enter a valid root url:")
+    else:
+        user_root = args.root
+
+    if not user_start.startswith('http'):
+        while not user_start.startswith('http'):
+            user_start = input("Please enter a valid starting url:")
+    else:
+        user_start = args.start
+
+    if not isinstance(user_limit, int):
+        while not isinstance(user_limit, int):
+            user_limit = input("Please enter the maximum number of pages to crawl:")
+            try:
+                user_limit = int(user_limit)
+            except:
+                pass        
+    else:
+        user_limit = args.limit
+
 
     real_crawler = Crawler(
-        root_url=args.root,
-        start_url=args.start,
-        crawl_limit=args.limit)
+        root_url=user_root,
+        start_url=user_start,
+        crawl_limit=user_limit)
     real_crawler.start_crawl()
